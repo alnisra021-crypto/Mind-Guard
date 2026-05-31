@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MindGuard - Mental Health Shield</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:linear-gradient(135deg,#0f172a,#1e293b,#312e81);
+      color:white;
+      overflow-x:hidden;
+    }
+
+    header{
+      text-align:center;
+      padding:40px 20px;
+    }
+
+    header h1{
+      font-size:3rem;
+      color:#67e8f9;
+    }
+
+    header p{
+      color:#cbd5e1;
+      margin-top:10px;
+    }
+
+    .container{
+      width:90%;
+      max-width:1200px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+      gap:25px;
+      padding-bottom:50px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter:blur(10px);
+      border-radius:22px;
+      padding:25px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card h2{
+      color:#67e8f9;
+      margin-bottom:15px;
+    }
+
+    .tag{
+      background:#06b6d4;
+      display:inline-block;
+      padding:5px 12px;
+      border-radius:999px;
+      font-size:0.8rem;
+      margin-bottom:10px;
+    }
+
+    textarea,input,select{
+      width:100%;
+      margin-top:12px;
+      padding:12px;
+      border:none;
+      border-radius:12px;
+      background:#e2e8f0;
+      color:#111827;
+    }
+
+    button{
+      width:100%;
+      margin-top:15px;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(135deg,#06b6d4,#3b82f6);
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      transform:scale(1.03);
+    }
+
+    .panic{
+      background:linear-gradient(135deg,#ef4444,#dc2626);
+      animation:pulse 1s infinite;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1);}
+      50%{transform:scale(1.03);}
+      100%{transform:scale(1);}
+    }
+
+    .result{
+      margin-top:15px;
+      color:#facc15;
+      font-weight:bold;
+    }
+
+    .mood-options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:15px;
+    }
+
+    .mood{
+      background:#1e293b;
+      padding:10px 15px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .mood:hover{
+      background:#06b6d4;
+    }
+
+    iframe{
+      width:100%;
+      height:220px;
+      border:none;
+      border-radius:15px;
+      margin-top:15px;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#cbd5e1;
+    }
+
+    .contact{
+      margin-top:15px;
+      background:#0f172a;
+      padding:12px;
+      border-radius:12px;
+      text-align:center;
+    }
+
+    .contact a{
+      color:#67e8f9;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛡 MindGuard</h1>
+  <p>The Mental Health & Stress Shield For Students</p>
+</header>
+
+<div class="container">
+
+  <!-- Mood -->
+  <div class="card">
+
+    <div class="tag">Mood Tracker</div>
+
+    <h2>😊 Mood Harian</h2>
+
+    <p>Pilih perasaan kamu hari ini:</p>
+
+    <div class="mood-options">
+      <div class="mood" onclick="setMood('Bahagia 😊')">😊</div>
+      <div class="mood" onclick="setMood('Sedih 😢')">😢</div>
+      <div class="mood" onclick="setMood('Stress 😫')">😫</div>
+      <div class="mood" onclick="setMood('Lelah 😴')">😴</div>
+      <div class="mood" onclick="setMood('Cemas 😰')">😰</div>
+    </div>
+
+    <div class="result" id="moodResult"></div>
+
+  </div>
+
+  <!-- Burnout -->
+  <div class="card">
+
+    <div class="tag">Burnout Detection</div>
+
+    <h2>🧠 Tes Burnout</h2>
+
+    <label>Seberapa lelah kamu belajar?</label>
+
+    <input type="range" min="1" max="10" id="burnoutRange">
+
+    <button onclick="checkBurnout()">Cek Burnout</button>
+
+    <div class="result" id="burnoutResult"></div>
+
+  </div>
+
+  <!-- Curhat -->
+  <div class="card">
+
+    <div class="tag">Anonymous Curhat</div>
+
+    <h2>💬 Curhat Anonim</h2>
+    <p style="margin-top:10px; color:#cbd5e1; line-height:1.7;">
+  Guru BK siap mendengarkanmu, jangan takut untuk bercerita 😊
+</p>
+
+    <textarea id="curhat"
+      rows="6"
+      placeholder="Tulis apa yang kamu rasakan..."></textarea>
+
+    <button onclick="sendCurhat()">
+      Kirim Curhat ke Guru BK
+    </button>
+
+    <div class="result" id="curhatResult"></div>
+
+    <div class="contact">
+      Konselor/BK:
+      <br>
+      <a href="https://wa.me/6282189642817" target="_blank">
+        082189642817
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Panic -->
+  <div class="card">
+
+    <div class="tag">Emergency Help</div>
+
+    <h2>🚨 Panic Button</h2>
+
+    <p>
+      Tekan tombol jika kamu sedang sangat stres,
+      panik, atau butuh bantuan segera.
+    </p>
+
+    <button class="panic" onclick="panicButton()">
+      SAYA BUTUH BANTUAN
+    </button>
+
+  </div>
+
+  <!-- AI Stress -->
+  <div class="card">
+
+    <div class="tag">AI Stress Analyzer</div>
+
+    <h2>🤖 Analisis Stress</h2>
+
+    <textarea id="aiText"
+      rows="5"
+      placeholder="Ceritakan kondisi kamu..."></textarea>
+
+    <button onclick="analyzeStress()">
+      Analisis Sekarang
+    </button>
+
+    <div class="result" id="aiResult"></div>
+
+  </div>
+
+  <!-- Parent Pressure -->
+  <div class="card">
+
+    <div class="tag">Parent Pressure</div>
+
+    <h2>👨‍👩‍👧 Tekanan Orang Tua</h2>
+    <p style="margin-top:10px; color:#cbd5e1; line-height:1.7;">
+  Setiap yang kamu ceritakan akan bersifat rahasia 🤎
+</p>
+
+    <label>Seberapa besar tekanan yang kamu rasakan?</label>
+
+    <select id="pressure">
+      <option>Rendah</option>
+      <option>Sedang</option>
+      <option>Tinggi</option>
+    </select>
+
+    <textarea
+      id="reason"
+      rows="5"
+      placeholder="Tuliskan alasan atau tekanan yang kamu rasakan dari orang tua..."></textarea>
+
+    <button onclick="sendPressure()">
+      Kirim ke Guru BK
+    </button>
+
+    <div class="result" id="pressureResult"></div>
+
+    <div class="contact">
+      Curhat langsung ke BK:
+      <br>
+      <a href="https://wa.me/6282189642817" target="_blank">
+        Chat WhatsApp BK
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Video Sedih -->
+  <div class="card">
+
+    <div class="tag">Healing Video</div>
+
+    <h2>💙 Cara Melepas Rasa Sedih</h2>
+
+    <iframe
+      src="https://www.youtube.com/embed/W8f5OW4Zpf8"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- Video Stress -->
+  <div class="card">
+
+    <div class="tag">Stress Relief</div>
+
+    <h2>😫 Cara Mengatasi Stress</h2>
+
+    <iframe
+      src="https://www.youtube.com/embed/d3st1aMmmiU"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- Video Kelelahan -->
+  <div class="card">
+
+    <div class="tag">Burnout Recovery</div>
+
+    <h2>😴 Cara Mengatasi Kelelahan</h2>
+
+    <iframe
+      src="https://www.youtube.com/embed/PhMFE_03Ysg"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- Video Anxiety -->
+  <div class="card">
+
+    <div class="tag">Anxiety Help</div>
+
+    <h2>😰 Cara Mengatasi Kecemasan Berlebihan</h2>
+
+    <iframe
+      src="https://www.youtube.com/embed/HDcWVhOuPYs"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 MindGuard | Mental Health Support System
+</footer>
+
+<script>
+
+  // Mood Tracker
+  function setMood(mood){
+
+    document.getElementById("moodResult").innerHTML =
+      "Mood kamu hari ini: " + mood;
+
+  }
+
+  // Burnout
+  function checkBurnout(){
+
+    let score =
+      document.getElementById("burnoutRange").value;
+
+    if(score <= 3){
+
+      document.getElementById("burnoutResult").innerHTML =
+      "✅ Kondisi mental masih aman.";
+
+    }
+
+    else if(score <= 7){
+
+      document.getElementById("burnoutResult").innerHTML =
+      "⚠ Kamu mulai mengalami burnout sedang.";
+
+    }
+
+    else{
+
+      document.getElementById("burnoutResult").innerHTML =
+      "🚨 Burnout tinggi! Segera konsultasi ke BK.";
+
+    }
+
+  }
+
+  // Curhat WA
+  function sendCurhat(){
+
+    let text =
+      document.getElementById("curhat").value;
+
+    let message =
+      "Halo Guru BK, saya ingin curhat secara anonim:%0A%0A" + text;
+
+    let wa =
+      "https://wa.me/6282189642817?text=" + message;
+
+    window.open(wa, '_blank');
+
+    document.getElementById("curhatResult").innerHTML =
+      "💙 Curhat siap dikirim ke Guru BK.";
+
+  }
+
+  // Panic Button
+  function panicButton(){
+
+    let message =
+      "🚨 Saya sedang butuh bantuan segera. Tolong hubungi saya.";
+
+    let wa =
+      "https://wa.me/6282189642817?text=" + message;
+
+    window.open(wa, '_blank');
+
+  }
+
+  // AI Stress
+  function analyzeStress(){
+
+    let text =
+      document.getElementById("aiText")
+      .value
+      .toLowerCase();
+
+    let result = "";
+
+    if(
+      text.includes("capek") ||
+      text.includes("lelah") ||
+      text.includes("stres") ||
+      text.includes("takut") ||
+      text.includes("sedih")
+    ){
+
+      result =
+      "⚠ AI mendeteksi tingkat stress cukup tinggi.";
+
+    }
+
+    else{
+
+      result =
+      "✅ Kondisi emosional masih stabil.";
+
+    }
+
+    document.getElementById("aiResult").innerHTML =
+      result;
+
+  }
+
+  // Parent Pressure
+  function sendPressure(){
+
+    let level =
+      document.getElementById("pressure").value;
+
+    let reason =
+      document.getElementById("reason").value;
+
+    let message =
+      "📌 Laporan Tekanan Orang Tua%0A%0A" +
+      "Tingkat Tekanan: " + level + "%0A%0A" +
+      "Alasan:%0A" + reason;
+
+    let wa =
+      "https://wa.me/6282189642817?text=" + message;
+
+    window.open(wa, '_blank');
+
+    document.getElementById("pressureResult").innerHTML =
+      "✅ Laporan berhasil dikirim.";
+
+  }
+
+</script>
+
+</body>
+</html>
